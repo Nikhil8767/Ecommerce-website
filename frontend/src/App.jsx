@@ -11,6 +11,7 @@ import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Cart from './pages/Cart'
 import Login from './pages/Login'
+import Footer from './components/footer'
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
         <Route path='/order' element={<Orders/>}/>
 
       </Routes>
+      <Footer/>
 
     </div>
   )
