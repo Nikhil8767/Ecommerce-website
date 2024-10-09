@@ -89,18 +89,19 @@
   //     }
   //     setFilterProducts(productsCopy)
   // }
-  import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ShopContext } from '../context/ShopContext';
 import { assets } from '../assets/assets';
 import Title from '../components/Title';
 import ProductItem from '../components/ProductItem';
 
 const Collections = () => {
-  const { products } = useContext(ShopContext);
+  const { products,search,showSearch } = useContext(ShopContext);
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState([]);
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
+  const [sortType,setSortType]=useState('relavent')
 
   const toggleCategory = (e) => {
     if (category.includes(e.target.value)) {
@@ -123,11 +124,31 @@ const Collections = () => {
     if (category.length > 0) {
       productsCopy = productsCopy.filter(item => category.includes(item.category));
     }
+    if(search && showSearch){
+      productsCopy=productsCopy.filter(item=>item.name.toLowerCase().includes(search.toLowerCase()))
+    }
     if (subCategory.length > 0) {
       productsCopy = productsCopy.filter(item => subCategory.includes(item.subCategory));
     }
     setFilterProducts(productsCopy);
   };
+
+  const sortProdut=()=>{
+    let fpCopy=filterProducts.slice();
+    switch (sortType){
+      case 'low-high':
+        setFilterProducts(fpCopy.sort((a,b)=>(a.price-b.price)));
+        break;
+
+      case 'high-low':
+        setFilterProducts(fpCopy.sort((a,b)=>(b.price-a.price)));
+        break;
+
+      default:
+        applyFilter();
+        break;
+    }
+  }
 
   useEffect(() => {
     setFilterProducts(products);
@@ -135,7 +156,11 @@ const Collections = () => {
 
   useEffect(() => {
     applyFilter();
-  }, [category, subCategory]);
+  }, [category, subCategory,search,showSearch]);
+
+  useEffect(()=>{
+    sortProdut();
+  },[sortType])
 
   return (
     <div className='flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t'>
@@ -185,7 +210,7 @@ const Collections = () => {
         {/* Header with Title and Sorting */}
         <div className='flex justify-between text-base sm:text-2xl mb-4'>
           <Title text1={'All'} text2={'COLLECTIONS'} />
-          <select className='text-sm sm:text-base'>
+          <select onChange={(e)=>setSortType(e.target.value)} className='text-sm sm:text-base'>
             <option value="relevant">Sort by: Relevant</option>
             <option value="low-high">Sort by: Low to High</option>
             <option value="high-low">Sort by: High to Low</option>
@@ -197,10 +222,11 @@ const Collections = () => {
           {filterProducts.map((item, index) => (
             <ProductItem 
               key={index} 
-              name={item._name} 
+              name={item.name} 
               id={item._id} 
               price={item.price} 
               image={item.image} 
+              // description={item.description}
             />
           ))}
         </div>

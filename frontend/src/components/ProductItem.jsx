@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { ShopContext } from '../context/ShopContext'
 import { Link } from 'react-router-dom'
 
-const ProductItem = ({id,image,name,price}) => {
+const ProductItem = ({id,image,name,price,description}) => {
 
     const {currency}=useContext(ShopContext)
   return (
@@ -11,6 +11,7 @@ const ProductItem = ({id,image,name,price}) => {
             <img src={image[0]} alt="" className='hover:scale-110 transition ease-in-out' />
         </div>
         <p className='pt-3 pb-1 text-sm'>{name}</p>
+        {/* <p className='text-xs text-gray-500 pb-1'>{description}</p> */}
         <p className='text-sm font-medium'>{currency}{price}</p>
 
     </Link>
