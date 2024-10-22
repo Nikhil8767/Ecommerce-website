@@ -156,7 +156,7 @@ const Collections = () => {
 
   useEffect(() => {
     applyFilter();
-  }, [category, subCategory,search,showSearch]);
+  }, [category, subCategory,search,showSearch,products]);
 
   useEffect(()=>{
     sortProdut();

@@ -20,6 +20,8 @@ const ShopContextProvider=(props)=>{
 
 
 
+    console.log(backendUrl);
+    console.log(import.meta.env.VITE_BACKEND_URL);
 
     const addToCart=async(itemId,size)=>{
         if(!size){
@@ -88,19 +90,26 @@ const ShopContextProvider=(props)=>{
         return totalAmount;
     }
 
-        // const getProductsData=async()=>{
-        //     try {
-        //         const response=await axios.get(backendUrl + "/api/product/list")
-        //         console.log(response.data);
+        const getProductsData=async()=>{
+            try {
+                const response=await axios.get(backendUrl + "/api/product/list")
+               if(response.data.success){
+                setProducts(response.data.products)
+               }else{
+                toast.error(response.data.message)
+               }
                 
-        //     } catch (error) {
+            } catch (error) {
+                console.log(error);
+                toast.error(error.message)
                 
-        //     }
-        // }
+                
+            }
+        }
 
-        // useEffect(()=>{
-        //     getProductsData()
-        // },[])
+        useEffect(()=>{
+            getProductsData()
+        },[])
 
 
     const value={
