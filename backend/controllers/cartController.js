@@ -36,6 +36,13 @@ const addToCart=async(req,res)=>{
 
 // update user cart 
 const updateCart=async(req,res)=>{
+    try {
+        const {userId,itemId,size,quantity}=req.body
+
+        const us
+    } catch (error) {
+        
+    }
 
 }
 
